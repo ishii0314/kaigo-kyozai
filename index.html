@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>介護給付サービス イメージマップ</title>
+<!-- 社会の理解B（介護保険制度）の補助教材。2026-10-15作成。制度の内容は2026年度時点。 -->
+<style>
+:root{
+  --ink:#1f2a37; --sub:#5b6573; --line:#d9dee5; --bg:#f6f8fb; --card:#fff;
+  --pref:#3f5bd9; --pref-bg:#eaf0ff; --pref-ink:#22348c;
+  --city:#0f8a6c; --city-bg:#e3f6ef; --city-ink:#0a5a47;
+  --home:#f2a33a; --home-bg:#fff4e2; --home-ink:#7a4a06;
+  --ng:#d64545;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"BIZ UDPGothic","Yu Gothic UI","Yu Gothic","Meiryo",sans-serif;line-height:1.9;font-size:17px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px 60px}
+
+/* 操作バー */
+#tools{position:sticky;top:0;z-index:10;background:rgba(246,248,251,.96);border-bottom:1px solid var(--line);padding:8px 16px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+#tools button{font:inherit;font-size:14px;line-height:1.4;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;cursor:pointer;color:var(--ink)}
+#tools button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.s{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 24px;margin-top:22px}
+h1{font-size:30px;margin:0 0 4px;line-height:1.6}
+h2{font-size:22px;margin:0 0 12px;line-height:1.6;display:flex;align-items:center;gap:10px}
+h2 .no{display:inline-flex;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;align-items:center;justify-content:center;font-size:17px;flex:none}
+.lead{color:var(--sub);margin:0}
+
+/* 凡例 */
+.legend{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:12px;font-size:15px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:18px;height:18px;border-radius:5px;display:inline-block}
+
+/* サービスのチップ */
+.chip{display:block;position:relative;border-radius:10px;padding:6px 10px 6px 12px;margin:6px 0;font-size:16px;line-height:1.75;cursor:default;transition:opacity .2s, box-shadow .2s}
+.chip.pref{background:var(--pref-bg);color:var(--pref-ink);border-left:6px solid var(--pref)}
+.chip.city{background:var(--city-bg);color:var(--city-ink);border-left:6px solid var(--city)}
+.chip.none{background:#f1f2f4;color:#3b4350;border-left:6px solid #9aa3ae}
+.chip .ji{font-size:12px;font-weight:700;background:var(--city);color:#fff;border-radius:4px;padding:0 5px;margin-right:6px;vertical-align:2px}
+.chip small{display:block;font-size:13px;color:var(--sub);line-height:1.6}
+.chip .mk{display:none;position:absolute;right:8px;top:6px;font-size:13px;font-weight:700;color:var(--ng);background:#fff;border:2px solid var(--ng);border-radius:6px;padding:0 6px;line-height:1.5}
+body.showng .chip[data-yobou="no"] .mk{display:inline-block}
+body.showng .chip[data-yobou]{padding-right:96px}
+body.showng .chip[data-yobou="no"]{opacity:.55}
+body.showng .chip[data-yobou="part"] .mk{display:inline-block;color:#b06d00;border-color:#b06d00}
+body.citymode .chip.pref,body.citymode .chip.none{opacity:.25}
+body.citymode .chip.city{box-shadow:0 0 0 3px var(--city)}
+body.hide .chip .nm{filter:blur(7px);user-select:none}
+body.hide .chip{cursor:pointer}
+body.hide .chip.open .nm{filter:none}
+
+/* 地図 */
+.map{display:grid;grid-template-columns:1fr 1.1fr 1fr;grid-template-areas:"stay visit day" "stay house day" "live short combo";gap:16px;margin-top:18px}
+.zone{border-radius:16px;padding:12px 14px;border:2px dashed var(--line);background:#fcfdff}
+.zone h3{margin:0 0 4px;font-size:19px;display:flex;align-items:center;gap:8px;line-height:1.6}
+.zone h3 .ic{font-size:26px}
+.zone .how{font-size:14px;color:var(--sub);margin:0 0 4px;line-height:1.6}
+.z-visit{grid-area:visit}.z-day{grid-area:day}.z-short{grid-area:short}.z-stay{grid-area:stay}.z-live{grid-area:live}.z-combo{grid-area:combo}
+.z-house{grid-area:house;border:none;background:none;padding:0;display:flex;flex-direction:column;align-items:center}
+.house{width:100%;max-width:340px}
+.roof{height:0;border-left:170px solid transparent;border-right:170px solid transparent;border-bottom:70px solid var(--home);margin:0 auto}
+.body{background:var(--home-bg);border:3px solid var(--home);border-top:none;border-radius:0 0 14px 14px;padding:10px 14px 12px;text-align:center}
+.body .title{font-size:22px;font-weight:700;color:var(--home-ink);margin:-4px 0 4px}
+.body .chip{text-align:left}
+.cm{margin-top:10px;width:100%;max-width:340px;border:3px solid #7d8794;border-radius:14px;padding:8px 12px;background:#fff}
+.cm b{display:block;font-size:15px;color:#3b4350}
+.arrow{font-size:13px;font-weight:700;color:var(--sub);margin-bottom:2px;line-height:1.5}
+
+/* 見分け方 */
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.rule{border-radius:14px;padding:12px 16px;border:1px solid var(--line)}
+.rule h3{margin:0 0 6px;font-size:18px;line-height:1.6}
+.kw{display:inline-block;border-radius:6px;padding:0 8px;margin:3px 4px 3px 0;font-weight:700;font-size:16px}
+.kw.c{background:var(--city-bg);color:var(--city-ink);border:2px solid var(--city)}
+.kw.u{background:var(--home-bg);color:var(--home-ink);border:2px solid var(--home)}
+.eq{color:var(--sub);font-size:15px}
+
+/* 施設3つ */
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.fac{border-radius:16px;border:2px solid var(--pref);background:var(--pref-bg);padding:14px 16px;color:var(--pref-ink)}
+.fac .big{font-size:40px;line-height:1}
+.fac h3{margin:6px 0 0;font-size:20px;line-height:1.6}
+.fac .nick{font-size:15px;color:var(--sub)}
+.fac .key{margin:8px 0 6px;font-size:22px;font-weight:700;color:var(--pref)}
+.fac ul{margin:0;padding-left:1.2em;font-size:15px;color:var(--ink)}
+.flow{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:12px;font-size:15px;color:var(--sub)}
+.flow span{border:1px solid var(--line);border-radius:999px;padding:2px 12px;background:#fff;color:var(--ink)}
+
+/* 数字 */
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.num{border-radius:14px;border:1px solid var(--line);padding:10px 14px;text-align:center}
+.num .n{font-size:40px;font-weight:700;line-height:1.3;color:var(--city)}
+.num.p .n{color:var(--pref)}
+.num .n small{font-size:18px}
+.num p{margin:0;font-size:15px}
+
+/* クイズ */
+.quiz{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.q{border:1px solid var(--line);border-radius:14px;padding:10px 14px}
+.q .qt{font-weight:700;font-size:17px}
+.q .btns{display:flex;gap:8px;margin-top:6px}
+.q button{font:inherit;font-size:15px;line-height:1.6;flex:1;border-radius:10px;border:2px solid var(--line);background:#fff;cursor:pointer;padding:4px 6px}
+.q button[data-a="pref"]{border-color:var(--pref);color:var(--pref-ink)}
+.q button[data-a="city"]{border-color:var(--city);color:var(--city-ink)}
+.q .fb{display:none;margin-top:6px;font-size:15px;border-radius:8px;padding:4px 10px;line-height:1.7}
+.q.ok .fb{display:block;background:#e8f7ee;color:#11613a}
+.q.ng .fb{display:block;background:#fdecec;color:#8e2121}
+.q.ok .fb::before{content:"◯ 正解　";font-weight:700}
+.q.ng .fb::before{content:"✕ ちがいます　";font-weight:700}
+#score{font-weight:700;margin-left:8px}
+
+.note{font-size:14px;color:var(--sub);margin-top:10px}
+
+@media (max-width:900px){
+  .map{grid-template-columns:1fr;grid-template-areas:"house" "visit" "day" "short" "combo" "stay" "live"}
+}
+@media print{
+  #tools{display:none}
+  body{background:#fff}
+  .s{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<div id="tools">
+  <a href="kubun.html" style="font-size:14px;line-height:1.4;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;color:var(--ink);text-decoration:none">ほかの分け方（パターン2〜4）→</a>
+  <button id="bCity" type="button">市町村のサービスだけ光らせる</button>
+  <button id="bNg" type="button">要支援の人は使えない？</button>
+  <button id="bHide" type="button">名前をかくして覚える</button>
+</div>
+
+<div class="wrap">
+
+<div class="s">
+  <h1>介護給付サービス　イメージマップ</h1>
+  <p class="lead">介護給付は、要介護1〜5の人が使うサービスです。「自分の家」を真ん中において、サービスがどこで行われるかで覚えましょう。</p>
+  <div class="legend">
+    <span><i class="sw" style="background:var(--pref)"></i>都道府県が指定するサービス</span>
+    <span><i class="sw" style="background:var(--city)"></i><b style="background:var(--city);color:#fff;border-radius:4px;padding:0 5px;font-size:12px">地</b>市町村が指定するサービス（地域密着型など）</span>
+    <span><i class="sw" style="background:#9aa3ae"></i>事業所の指定はない（費用を支給）</span>
+  </div>
+</div>
+
+<div class="s">
+  <h2><span class="no">1</span>家を真ん中にした地図</h2>
+  <div class="map">
+
+    <div class="zone z-visit">
+      <h3><span class="ic">🚶</span>家に来てもらう（訪問）</h3>
+      <p class="how">専門職が自宅に来る</p>
+      <div class="chip pref" data-yobou="no"><span class="nm">訪問介護</span><small>ホームヘルプ</small><span class="mk">要支援✕</span></div>
+      <div class="chip pref"><span class="nm">訪問入浴介護</span><small>浴槽を持って来る</small></div>
+      <div class="chip pref"><span class="nm">訪問看護</span></div>
+      <div class="chip pref"><span class="nm">訪問リハビリテーション</span></div>
+      <div class="chip pref"><span class="nm">居宅療養管理指導</span><small>医師・薬剤師などが助言</small></div>
+      <div class="chip city" data-yobou="no"><span class="nm"><span class="ji">地</span>定期巡回・随時対応型訪問介護看護</span><small>24時間・定期＋呼んだら来る</small><span class="mk">要支援✕</span></div>
+      <div class="chip city" data-yobou="no"><span class="nm"><span class="ji">地</span>夜間対応型訪問介護</span><small>夜だけ来る</small><span class="mk">要支援✕</span></div>
+    </div>
+
+    <div class="z-house">
+      <div class="house">
+        <div class="roof"></div>
+        <div class="body">
+          <div class="title">🏠 自宅</div>
+          <div class="arrow">家の中を整える</div>
+          <div class="chip pref"><span class="nm">福祉用具貸与</span><small>車いす・特殊寝台などを借りる</small></div>
+          <div class="chip pref"><span class="nm">特定福祉用具販売</span><small>ポータブルトイレ・入浴用いすなど（人が使って汚れるもの）を買う</small></div>
+          <div class="chip none"><span class="nm">住宅改修</span><small>手すり・段差をなくす（上限20万円）</small></div>
+        </div>
+      </div>
+      <div class="cm">
+        <b>🧭 全体の計画をつくる</b>
+        <div class="chip city"><span class="nm"><span class="ji">地</span>居宅介護支援</span><small>ケアマネジャーがケアプランをつくる。利用者の負担はなし</small></div>
+      </div>
+    </div>
+
+    <div class="zone z-day">
+      <h3><span class="ic">🚌</span>日帰りで通う（通所）</h3>
+      <p class="how">朝むかえに来て、夕方に家へ帰る</p>
+      <div class="chip pref" data-yobou="no"><span class="nm">通所介護</span><small>デイサービス</small><span class="mk">要支援✕</span></div>
+      <div class="chip pref"><span class="nm">通所リハビリテーション</span><small>デイケア（老健・病院など）</small></div>
+      <div class="chip city" data-yobou="no"><span class="nm"><span class="ji">地</span>地域密着型通所介護</span><small>小さなデイサービス（定員18人以下）</small><span class="mk">要支援✕</span></div>
+      <div class="chip city"><span class="nm"><span class="ji">地</span>認知症対応型通所介護</span><small>認知症の人のデイサービス</small></div>
+    </div>
+
+    <div class="zone z-short">
+      <h3><span class="ic">🌙</span>短い期間だけ泊まる（短期入所）</h3>
+      <p class="how">数日泊まって、また家に帰る。家族が休むためにも使う</p>
+      <div class="chip pref"><span class="nm">短期入所生活介護</span><small>福祉系のショートステイ（特養など）</small></div>
+      <div class="chip pref"><span class="nm">短期入所療養介護</span><small>医療系のショートステイ（老健など）</small></div>
+    </div>
+
+    <div class="zone z-combo">
+      <h3><span class="ic">🔄</span>通う・来る・泊まるをセットで</h3>
+      <p class="how">1つの事業所が組み合わせて支える</p>
+      <div class="chip city"><span class="nm"><span class="ji">地</span>小規模多機能型居宅介護</span><small>通いが中心＋訪問＋泊まり</small></div>
+      <div class="chip city" data-yobou="no"><span class="nm"><span class="ji">地</span>看護小規模多機能型居宅介護</span><small>上の3つ＋訪問看護</small><span class="mk">要支援✕</span></div>
+    </div>
+
+    <div class="zone z-stay">
+      <h3><span class="ic">🏢</span>施設に入る（施設サービス）</h3>
+      <p class="how">家を出て、施設で暮らす。3つとも要支援の人は使えない</p>
+      <div class="chip pref" data-yobou="no"><span class="nm">介護老人福祉施設</span><small>特別養護老人ホーム（特養）</small><span class="mk">要支援✕</span></div>
+      <div class="chip pref" data-yobou="no"><span class="nm">介護老人保健施設</span><small>老健</small><span class="mk">要支援✕</span></div>
+      <div class="chip pref" data-yobou="no"><span class="nm">介護医療院</span><span class="mk">要支援✕</span></div>
+      <div class="chip city" data-yobou="no"><span class="nm"><span class="ji">地</span>地域密着型介護老人福祉施設入所者生活介護</span><small>小さな特養（定員29人以下）</small><span class="mk">要支援✕</span></div>
+    </div>
+
+    <div class="zone z-live">
+      <h3><span class="ic">🏘️</span>住まいを移して介護を受ける</h3>
+      <p class="how">ホームに住み、そこで介護を受ける</p>
+      <div class="chip pref"><span class="nm">特定施設入居者生活介護</span><small>有料老人ホーム・軽費老人ホームなど</small></div>
+      <div class="chip city" data-yobou="no"><span class="nm"><span class="ji">地</span>地域密着型特定施設入居者生活介護</span><small>小さな有料老人ホームなど（定員29人以下）</small><span class="mk">要支援✕</span></div>
+      <div class="chip city" data-yobou="part"><span class="nm"><span class="ji">地</span>認知症対応型共同生活介護</span><small>グループホーム（1ユニット5〜9人）</small><span class="mk">要支援2だけ◯</span></div>
+    </div>
+
+  </div>
+  <p class="note">上のボタンで「市町村のサービス」「要支援の人が使えないサービス」を光らせたり、名前をかくしたりできます。名前をかくしたときは、カードをタップすると名前が出ます。</p>
+</div>
+
+<div class="s">
+  <h2><span class="no">2</span>名前を見れば分かる！見分け方</h2>
+  <div class="rules">
+    <div class="rule">
+      <h3>どこで行うか → 名前の中のことば</h3>
+      <div><span class="kw u">訪問</span><span class="eq">＝ 家に来る</span></div>
+      <div><span class="kw u">通所</span><span class="eq">＝ 日帰りで通う</span></div>
+      <div><span class="kw u">短期入所</span><span class="eq">＝ 短く泊まる</span></div>
+      <div><span class="kw u">施設</span><span class="kw u">入所</span><span class="eq">＝ 入って暮らす</span></div>
+    </div>
+    <div class="rule" style="border-color:var(--city)">
+      <h3>このことばがあれば → 市町村</h3>
+      <span class="kw c">地域密着型</span><span class="kw c">認知症対応型</span><span class="kw c">小規模多機能</span><span class="kw c">夜間対応</span><span class="kw c">定期巡回</span>
+      <p class="eq" style="margin:6px 0 0">「小さい・地元の人向け」のサービス。原則としてその市町村に住む人だけが使えます。ケアプランをつくる居宅介護支援も市町村です。</p>
+    </div>
+    <div class="rule">
+      <h3>生活か、医療か</h3>
+      <div><span class="kw u">生活介護</span><span class="eq">＝ 福祉の色が強い（特養など）</span></div>
+      <div><span class="kw u">療養</span><span class="kw u">看護</span><span class="kw u">リハビリ</span><span class="eq">＝ 医療の色が強い（老健・病院など）</span></div>
+      <p class="eq" style="margin:6px 0 0">例：短期入所<b>生活</b>介護は特養、短期入所<b>療養</b>介護は老健や病院で行います。</p>
+    </div>
+  </div>
+</div>
+
+<div class="s">
+  <h2><span class="no">3</span>施設サービス3つのちがい</h2>
+  <div class="three">
+    <div class="fac">
+      <div class="big">🏠</div>
+      <h3>介護老人福祉施設</h3>
+      <div class="nick">特別養護老人ホーム（特養）</div>
+      <div class="key">生活の場</div>
+      <ul><li>ずっと暮らす場所</li><li>入れるのは原則として要介護3以上</li></ul>
+    </div>
+    <div class="fac">
+      <div class="big">🔁</div>
+      <h3>介護老人保健施設</h3>
+      <div class="nick">老健</div>
+      <div class="key">家に帰るための場</div>
+      <ul><li>リハビリをして在宅復帰をめざす</li><li>病院と家の「中間」の施設</li></ul>
+    </div>
+    <div class="fac">
+      <div class="big">🩺</div>
+      <h3>介護医療院</h3>
+      <div class="nick">2018年度にできた施設</div>
+      <div class="key">医療＋生活の場</div>
+      <ul><li>長い期間、医療が必要な人が暮らす</li><li>介護療養型医療施設は2024年3月末で廃止され、ここへ移った</li></ul>
+    </div>
+  </div>
+  <div class="flow"><span>病院</span>→<span>老健でリハビリ</span>→<span>自宅</span>　／　<span>自宅で暮らせない</span>→<span>特養</span></div>
+</div>
+
+<div class="s">
+  <h2><span class="no">4</span>数字で覚える</h2>
+  <div class="nums">
+    <div class="num"><div class="n">18<small>人以下</small></div><p>地域密着型通所介護の定員</p></div>
+    <div class="num"><div class="n">29<small>人以下</small></div><p>地域密着型の特養・特定施設の定員</p></div>
+    <div class="num"><div class="n">5〜9<small>人</small></div><p>グループホーム1ユニットの人数</p></div>
+    <div class="num p"><div class="n">3<small>以上</small></div><p>特養に入れる要介護度（原則）</p></div>
+    <div class="num"><div class="n">0<small>円</small></div><p>ケアプラン作成（居宅介護支援）の利用者負担</p></div>
+    <div class="num" style="color:#3b4350"><div class="n" style="color:#5b6573">20<small>万円</small></div><p>住宅改修の支給の上限（原則1人1回）</p></div>
+  </div>
+</div>
+
+<div class="s">
+  <h2><span class="no">5</span>やってみよう：都道府県？市町村？<span id="score"></span></h2>
+  <div class="quiz">
+    <div class="q" data-c="pref"><div class="qt">① 訪問介護</div><div class="btns"><button type="button" data-a="pref">都道府県</button><button type="button" data-a="city">市町村</button></div><div class="fb">都道府県。名前に「地域密着型」などがありません。</div></div>
+    <div class="q" data-c="city"><div class="qt">② 認知症対応型共同生活介護</div><div class="btns"><button type="button" data-a="pref">都道府県</button><button type="button" data-a="city">市町村</button></div><div class="fb">市町村。「認知症対応型」があります（グループホーム）。</div></div>
+    <div class="q" data-c="pref"><div class="qt">③ 介護老人保健施設</div><div class="btns"><button type="button" data-a="pref">都道府県</button><button type="button" data-a="city">市町村</button></div><div class="fb">都道府県。施設サービスは3つとも都道府県です。</div></div>
+    <div class="q" data-c="city"><div class="qt">④ 夜間対応型訪問介護</div><div class="btns"><button type="button" data-a="pref">都道府県</button><button type="button" data-a="city">市町村</button></div><div class="fb">市町村。「夜間対応」があります。</div></div>
+    <div class="q" data-c="pref"><div class="qt">⑤ 短期入所療養介護</div><div class="btns"><button type="button" data-a="pref">都道府県</button><button type="button" data-a="city">市町村</button></div><div class="fb">都道府県。医療系のショートステイです。</div></div>
+    <div class="q" data-c="city"><div class="qt">⑥ 居宅介護支援</div><div class="btns"><button type="button" data-a="pref">都道府県</button><button type="button" data-a="city">市町村</button></div><div class="fb">市町村。2018年度から市町村が指定しています。</div></div>
+    <div class="q" data-c="city"><div class="qt">⑦ 小規模多機能型居宅介護</div><div class="btns"><button type="button" data-a="pref">都道府県</button><button type="button" data-a="city">市町村</button></div><div class="fb">市町村。「小規模多機能」があります。</div></div>
+    <div class="q" data-c="pref"><div class="qt">⑧ 特定施設入居者生活介護</div><div class="btns"><button type="button" data-a="pref">都道府県</button><button type="button" data-a="city">市町村</button></div><div class="fb">都道府県。「地域密着型」がつくと市町村になります。</div></div>
+  </div>
+  <p class="note">「要支援✕」は、介護予防のサービス（予防給付）にない、という意味です。訪問介護と通所介護の要支援向けは、市町村の総合事業に移りました。</p>
+</div>
+
+</div>
+
+<script>
+(function(){
+  var b = document.body;
+  function tg(id, cls){
+    var el = document.getElementById(id);
+    el.addEventListener('click', function(){
+      el.classList.toggle('on', b.classList.toggle(cls));
+    });
+  }
+  tg('bCity', 'citymode');
+  tg('bNg', 'showng');
+  document.getElementById('bHide').addEventListener('click', function(){
+    var on = b.classList.toggle('hide');
+    this.classList.toggle('on', on);
+    document.querySelectorAll('.chip.open').forEach(function(c){ c.classList.remove('open'); });
+  });
+  document.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click', function(){ if (b.classList.contains('hide')) c.classList.toggle('open'); });
+  });
+  var qs = document.querySelectorAll('.q'), score = document.getElementById('score');
+  function upd(){
+    var done = document.querySelectorAll('.q.ok, .q.ng').length, ok = document.querySelectorAll('.q.ok').length;
+    score.textContent = done ? '（' + ok + ' / ' + qs.length + '）' : '';
+  }
+  qs.forEach(function(q){
+    q.querySelectorAll('button').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        q.classList.remove('ok', 'ng');
+        q.classList.add(btn.dataset.a === q.dataset.c ? 'ok' : 'ng');
+        upd();
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>介護給付サービス 区分別パターン</title>
+<!-- 社会の理解B（介護保険制度）の補助教材。index.html の続き。2026-10-15作成。制度の内容は2026年度時点。 -->
+<style>
+:root{
+  --ink:#1f2a37; --sub:#5b6573; --line:#d9dee5; --bg:#f6f8fb; --card:#fff;
+  --kyo:#3f5bd9; --kyo-bg:#eaf0ff; --kyo-ink:#22348c;
+  --chi:#0f8a6c; --chi-bg:#e3f6ef; --chi-ink:#0a5a47;
+  --shi:#c2553a; --shi-bg:#fcede7; --shi-ink:#7a2c18;
+  --etc:#7d8794; --etc-bg:#f1f2f4; --etc-ink:#3b4350;
+  --fuku:#2f7fd1; --fuku-bg:#e6f1fb; --fuku-ink:#0c447c;
+  --iryo:#d14a6b; --iryo-bg:#fdeaf0; --iryo-ink:#7a1c35;
+  --both:#8a5bd1; --both-bg:#f1eafd; --both-ink:#45247a;
+  --gen:#f2a33a; --gen-bg:#fff4e2; --gen-ink:#7a4a06;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"BIZ UDPGothic","Yu Gothic UI","Yu Gothic","Meiryo",sans-serif;line-height:1.85;font-size:17px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px 60px}
+#tools{position:sticky;top:0;z-index:10;background:rgba(246,248,251,.96);border-bottom:1px solid var(--line);padding:8px 16px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+#tools a,#tools button{font:inherit;font-size:14px;line-height:1.4;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;cursor:pointer;color:var(--ink);text-decoration:none}
+#tools button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+#tools .sep{width:1px;height:22px;background:var(--line);margin:0 4px}
+.s{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 24px;margin-top:22px;scroll-margin-top:64px}
+h1{font-size:30px;margin:0 0 4px;line-height:1.6}
+h2{font-size:23px;margin:0 0 4px;line-height:1.6;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+h2 .pt{display:inline-block;background:var(--ink);color:#fff;border-radius:8px;padding:0 10px;font-size:15px}
+.lead{color:var(--sub);margin:0 0 14px}
+.note{font-size:14px;color:var(--sub);margin:10px 0 0}
+
+/* 共通のチップ */
+.chip{display:block;border-radius:9px;padding:5px 10px;margin:5px 0;font-size:15.5px;line-height:1.7;background:#fff;border:1px solid var(--line);cursor:default}
+.chip small{display:block;font-size:12.5px;color:var(--sub);line-height:1.5}
+body.hide .chip .nm{filter:blur(7px);user-select:none}
+body.hide .chip{cursor:pointer}
+body.hide .chip.open .nm{filter:none}
+
+/* パターン2：法律の区分 */
+.law{display:grid;grid-template-columns:1.6fr 1.3fr 1fr;gap:14px;align-items:start}
+.box{border-radius:16px;padding:12px 14px;border:2px solid}
+.box .hd{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.box h3{margin:0;font-size:20px;line-height:1.5}
+.box .cnt{font-size:44px;font-weight:700;line-height:1}
+.box .cnt small{font-size:16px;margin-left:2px}
+.box .who{font-size:13.5px;margin:2px 0 6px}
+.box.kyo{border-color:var(--kyo);background:var(--kyo-bg);color:var(--kyo-ink)}
+.box.chi{border-color:var(--chi);background:var(--chi-bg);color:var(--chi-ink)}
+.box.shi{border-color:var(--shi);background:var(--shi-bg);color:var(--shi-ink)}
+.box.etc{border-color:var(--etc);background:var(--etc-bg);color:var(--etc-ink)}
+.grp{margin-top:8px}
+.grp > b{display:inline-block;font-size:13px;border-radius:999px;padding:0 10px;background:rgba(255,255,255,.75);border:1px solid currentColor}
+.grp .chip{color:var(--ink)}
+.side{display:flex;flex-direction:column;gap:14px}
+.trap{margin-top:16px;border:2px solid #e0a100;background:#fff8e1;border-radius:14px;padding:10px 16px}
+.trap h3{margin:0 0 4px;font-size:18px;color:#7a5400}
+.trap ul{margin:0;padding-left:1.2em}
+.trap li{margin:2px 0}
+
+/* パターン3：福祉系・医療系 */
+.fi{display:grid;grid-template-columns:1fr 220px 1fr;gap:14px;align-items:stretch}
+.half{border-radius:16px;padding:12px 14px}
+.half h3{margin:0;font-size:21px;line-height:1.5}
+.half .tg{font-size:14px;margin:0 0 6px}
+.half.fuku{background:var(--fuku-bg);color:var(--fuku-ink);border:2px solid var(--fuku)}
+.half.iryo{background:var(--iryo-bg);color:var(--iryo-ink);border:2px solid var(--iryo)}
+.half.both{background:var(--both-bg);color:var(--both-ink);border:2px dashed var(--both);text-align:center}
+.half .chip{color:var(--ink)}
+.half.both .chip{text-align:left}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+.hint{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:14px}
+.hint div{border:1px solid var(--line);border-radius:12px;padding:8px 14px;font-size:15.5px}
+.kw{display:inline-block;border-radius:6px;padding:0 8px;margin:2px 3px 2px 0;font-weight:700}
+.kw.f{background:var(--fuku-bg);color:var(--fuku-ink);border:2px solid var(--fuku)}
+.kw.i{background:var(--iryo-bg);color:var(--iryo-ink);border:2px solid var(--iryo)}
+
+/* パターン4：お金の区分 */
+.money{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;align-items:start}
+.wallet{border:3px solid var(--gen);background:var(--gen-bg);border-radius:20px;padding:12px 16px;color:var(--gen-ink);position:relative}
+.wallet h3{margin:0;font-size:20px;line-height:1.5}
+.wallet .tg{font-size:14px;margin:0 0 8px}
+.meter{height:22px;border-radius:999px;background:#fff;border:2px solid var(--gen);overflow:hidden;display:flex;margin:4px 0 10px}
+.meter span{display:block;height:100%}
+.wallet .cols2 .chip{color:var(--ink)}
+.out{border-radius:16px;padding:12px 14px;border:2px solid;margin-bottom:14px}
+.out h3{margin:0;font-size:18px;line-height:1.5}
+.out .tg{font-size:13.5px;margin:0 0 6px}
+.out .chip{color:var(--ink)}
+.out.a{border-color:var(--shi);background:var(--shi-bg);color:var(--shi-ink)}
+.out.b{border-color:var(--chi);background:var(--chi-bg);color:var(--chi-ink)}
+.out.c{border-color:var(--etc);background:var(--etc-bg);color:var(--etc-ink)}
+.pay{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.pay div{flex:1 1 220px;border:1px solid var(--line);border-radius:12px;padding:8px 14px;font-size:15.5px}
+.pay b{font-size:22px}
+
+/* クイズ */
+.quiz{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:12px;margin-top:6px}
+.q{border:1px solid var(--line);border-radius:14px;padding:10px 14px}
+.q .qt{font-weight:700}
+.q .btns{display:flex;gap:6px;margin-top:6px}
+.q button{font:inherit;font-size:14.5px;line-height:1.5;flex:1;border-radius:10px;border:2px solid var(--line);background:#fff;cursor:pointer;padding:4px}
+.q .fb{display:none;margin-top:6px;font-size:15px;border-radius:8px;padding:4px 10px;line-height:1.7}
+.q.ok .fb{display:block;background:#e8f7ee;color:#11613a}
+.q.ng .fb{display:block;background:#fdecec;color:#8e2121}
+.q.ok .fb::before{content:"◯ 正解　";font-weight:700}
+.q.ng .fb::before{content:"✕ ちがいます　";font-weight:700}
+.score{font-size:17px;font-weight:700;color:var(--sub)}
+h3.qh{font-size:18px;margin:18px 0 0;display:flex;gap:8px;align-items:center}
+
+@media (max-width:900px){
+  .law,.money{grid-template-columns:1fr}
+  .fi{grid-template-columns:1fr}
+}
+@media print{#tools{display:none} body{background:#fff} .s{break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<div id="tools">
+  <a href="index.html">パターン1　家の地図</a>
+  <a href="#p2">パターン2　法律の区分</a>
+  <a href="#p3">パターン3　福祉系・医療系</a>
+  <a href="#p4">パターン4　お金のしくみ</a>
+  <span class="sep"></span>
+  <button id="bHide" type="button">名前をかくして覚える</button>
+</div>
+
+<div class="wrap">
+
+<div class="s">
+  <h1>介護給付サービス　区分別パターン</h1>
+  <p class="lead" style="margin:0">同じサービスを、ちがう見方で分けてみます。パターン1（家の地図）とくらべながら、自分が覚えやすい見方を見つけましょう。</p>
+</div>
+
+<!-- ===== パターン2 ===== -->
+<div class="s" id="p2">
+  <h2><span class="pt">パターン2</span>法律の区分で分ける</h2>
+  <p class="lead">介護保険法では、介護給付のサービスを次のように分けています。数字（12・9・3）もいっしょに覚えましょう。</p>
+
+  <div class="law">
+    <div class="box kyo">
+      <div class="hd"><h3>居宅サービス</h3><div class="cnt">12<small>種類</small></div></div>
+      <div class="who">都道府県が指定｜家で暮らす人のためのサービス</div>
+      <div class="grp"><b>訪問系　5</b>
+        <div class="chip"><span class="nm">訪問介護</span></div>
+        <div class="chip"><span class="nm">訪問入浴介護</span></div>
+        <div class="chip"><span class="nm">訪問看護</span></div>
+        <div class="chip"><span class="nm">訪問リハビリテーション</span></div>
+        <div class="chip"><span class="nm">居宅療養管理指導</span></div>
+      </div>
+      <div class="grp"><b>通所系　2</b>
+        <div class="chip"><span class="nm">通所介護</span></div>
+        <div class="chip"><span class="nm">通所リハビリテーション</span></div>
+      </div>
+      <div class="grp"><b>短期入所系　2</b>
+        <div class="chip"><span class="nm">短期入所生活介護</span></div>
+        <div class="chip"><span class="nm">短期入所療養介護</span></div>
+      </div>
+      <div class="grp"><b>居住系　1</b>
+        <div class="chip"><span class="nm">特定施設入居者生活介護</span><small>有料老人ホームなど。「施設」とつくが居宅サービス</small></div>
+      </div>
+      <div class="grp"><b>福祉用具　2</b>
+        <div class="chip"><span class="nm">福祉用具貸与</span></div>
+        <div class="chip"><span class="nm">特定福祉用具販売</span></div>
+      </div>
+    </div>
+
+    <div class="box chi">
+      <div class="hd"><h3>地域密着型サービス</h3><div class="cnt">9<small>種類</small></div></div>
+      <div class="who">市町村が指定｜原則その市町村の住民だけ</div>
+      <div class="grp"><b>訪問系　2</b>
+        <div class="chip"><span class="nm">定期巡回・随時対応型訪問介護看護</span></div>
+        <div class="chip"><span class="nm">夜間対応型訪問介護</span></div>
+      </div>
+      <div class="grp"><b>通所系　2</b>
+        <div class="chip"><span class="nm">地域密着型通所介護</span></div>
+        <div class="chip"><span class="nm">認知症対応型通所介護</span></div>
+      </div>
+      <div class="grp"><b>組み合わせ　2</b>
+        <div class="chip"><span class="nm">小規模多機能型居宅介護</span></div>
+        <div class="chip"><span class="nm">看護小規模多機能型居宅介護</span><small>法律上の名前は「複合型サービス」</small></div>
+      </div>
+      <div class="grp"><b>居住系　2</b>
+        <div class="chip"><span class="nm">認知症対応型共同生活介護</span><small>グループホーム</small></div>
+        <div class="chip"><span class="nm">地域密着型特定施設入居者生活介護</span></div>
+      </div>
+      <div class="grp"><b>施設系　1</b>
+        <div class="chip"><span class="nm">地域密着型介護老人福祉施設入所者生活介護</span><small>定員29人以下の特養</small></div>
+      </div>
+    </div>
+
+    <div class="side">
+      <div class="box shi">
+        <div class="hd"><h3>施設サービス</h3><div class="cnt">3<small>種類</small></div></div>
+        <div class="who">都道府県が指定｜施設に入って暮らす</div>
+        <div class="chip"><span class="nm">介護老人福祉施設</span><small>特養</small></div>
+        <div class="chip"><span class="nm">介護老人保健施設</span><small>老健</small></div>
+        <div class="chip"><span class="nm">介護医療院</span></div>
+      </div>
+      <div class="box etc">
+        <h3>その他</h3>
+        <div class="who">上の3つに入らないもの</div>
+        <div class="chip"><span class="nm">居宅介護支援</span><small>ケアプランづくり。市町村が指定</small></div>
+        <div class="chip"><span class="nm">住宅改修</span><small>費用の支給（居宅介護住宅改修費）</small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="trap">
+    <h3>⚠ ひっかけに注意</h3>
+    <ul>
+      <li><b>特定施設入居者生活介護</b>は「施設」とつくが<b>居宅サービス</b>。有料老人ホームは「家」と考える。</li>
+      <li><b>グループホーム</b>（認知症対応型共同生活介護）は施設サービスではなく<b>地域密着型サービス</b>。</li>
+      <li><b>短期入所</b>は施設に泊まるが<b>居宅サービス</b>。家で暮らし続けるためのサービスだから。</li>
+      <li>施設サービスは<b>3つだけ</b>。小さな特養（地域密着型介護老人福祉施設）は地域密着型の仲間。</li>
+    </ul>
+  </div>
+
+  <h3 class="qh">やってみよう：どの区分？ <span class="score" id="sc2"></span></h3>
+  <div class="quiz" data-score="sc2">
+    <div class="q" data-c="k"><div class="qt">① 特定施設入居者生活介護</div><div class="btns"><button type="button" data-a="k">居宅</button><button type="button" data-a="c">地域密着型</button><button type="button" data-a="s">施設</button></div><div class="fb">居宅サービス。「施設」とつくがひっかけ。</div></div>
+    <div class="q" data-c="c"><div class="qt">② 認知症対応型共同生活介護</div><div class="btns"><button type="button" data-a="k">居宅</button><button type="button" data-a="c">地域密着型</button><button type="button" data-a="s">施設</button></div><div class="fb">地域密着型サービス（グループホーム）。</div></div>
+    <div class="q" data-c="k"><div class="qt">③ 短期入所療養介護</div><div class="btns"><button type="button" data-a="k">居宅</button><button type="button" data-a="c">地域密着型</button><button type="button" data-a="s">施設</button></div><div class="fb">居宅サービス。泊まっても家で暮らすためのもの。</div></div>
+    <div class="q" data-c="s"><div class="qt">④ 介護医療院</div><div class="btns"><button type="button" data-a="k">居宅</button><button type="button" data-a="c">地域密着型</button><button type="button" data-a="s">施設</button></div><div class="fb">施設サービス（3つのうちの1つ）。</div></div>
+    <div class="q" data-c="c"><div class="qt">⑤ 地域密着型介護老人福祉施設入所者生活介護</div><div class="btns"><button type="button" data-a="k">居宅</button><button type="button" data-a="c">地域密着型</button><button type="button" data-a="s">施設</button></div><div class="fb">地域密着型サービス。小さな特養。</div></div>
+    <div class="q" data-c="k"><div class="qt">⑥ 特定福祉用具販売</div><div class="btns"><button type="button" data-a="k">居宅</button><button type="button" data-a="c">地域密着型</button><button type="button" data-a="s">施設</button></div><div class="fb">居宅サービス。</div></div>
+  </div>
+</div>
+
+<!-- ===== パターン3 ===== -->
+<div class="s" id="p3">
+  <h2><span class="pt">パターン3</span>福祉系・医療系で分ける</h2>
+  <p class="lead">「生活を支える」サービスか、「医療・看護・リハビリ」のサービスか、で分けます。医療系は医師や看護師などの医療職が中心で、主治医の指示が必要なものがあります。</p>
+
+  <div class="fi">
+    <div class="half fuku">
+      <h3>🧺 福祉系</h3>
+      <p class="tg">生活を支える｜介護職が中心</p>
+      <div class="chip"><span class="nm">訪問介護</span></div>
+      <div class="chip"><span class="nm">訪問入浴介護</span></div>
+      <div class="chip"><span class="nm">夜間対応型訪問介護</span></div>
+      <div class="chip"><span class="nm">通所介護</span></div>
+      <div class="chip"><span class="nm">地域密着型通所介護</span></div>
+      <div class="chip"><span class="nm">認知症対応型通所介護</span></div>
+      <div class="chip"><span class="nm">短期入所生活介護</span></div>
+      <div class="chip"><span class="nm">小規模多機能型居宅介護</span></div>
+      <div class="chip"><span class="nm">特定施設入居者生活介護</span><small>地域密着型も同じ</small></div>
+      <div class="chip"><span class="nm">認知症対応型共同生活介護</span></div>
+      <div class="chip"><span class="nm">福祉用具貸与・特定福祉用具販売</span></div>
+      <div class="chip"><span class="nm">介護老人福祉施設</span><small>特養。地域密着型も同じ</small></div>
+    </div>
+
+    <div class="half both">
+      <h3>🤝 両方</h3>
+      <p class="tg">介護と看護を<br>いっしょに届ける</p>
+      <div class="chip"><span class="nm">定期巡回・随時対応型訪問介護看護</span></div>
+      <div class="chip"><span class="nm">看護小規模多機能型居宅介護</span></div>
+      <p class="tg" style="margin-top:10px">名前に「介護」と「看護」の両方が入っている</p>
+    </div>
+
+    <div class="half iryo">
+      <h3>🩺 医療系</h3>
+      <p class="tg">医療・看護・リハビリ｜医療職が中心</p>
+      <div class="chip"><span class="nm">訪問看護</span><small>主治医の訪問看護指示書が必要</small></div>
+      <div class="chip"><span class="nm">訪問リハビリテーション</span></div>
+      <div class="chip"><span class="nm">居宅療養管理指導</span><small>医師・歯科医師・薬剤師・管理栄養士など</small></div>
+      <div class="chip"><span class="nm">通所リハビリテーション</span><small>デイケア</small></div>
+      <div class="chip"><span class="nm">短期入所療養介護</span></div>
+      <div class="chip"><span class="nm">介護老人保健施設</span><small>老健</small></div>
+      <div class="chip"><span class="nm">介護医療院</span></div>
+    </div>
+  </div>
+
+  <div class="hint">
+    <div>名前に <span class="kw i">看護</span><span class="kw i">リハビリ</span><span class="kw i">療養</span><span class="kw i">医療</span><span class="kw i">保健</span> → 医療系</div>
+    <div>名前に <span class="kw f">介護</span><span class="kw f">生活介護</span><span class="kw f">福祉</span> だけ → 福祉系</div>
+    <div>ペアで覚える：<b>通所介護</b>（デイサービス・福祉）⇔ <b>通所リハ</b>（デイケア・医療）／<b>短期入所生活介護</b>（福祉）⇔ <b>短期入所療養介護</b>（医療）</div>
+  </div>
+
+  <h3 class="qh">やってみよう：福祉系？医療系？ <span class="score" id="sc3"></span></h3>
+  <div class="quiz" data-score="sc3">
+    <div class="q" data-c="f"><div class="qt">① 短期入所生活介護</div><div class="btns"><button type="button" data-a="f">福祉系</button><button type="button" data-a="i">医療系</button></div><div class="fb">福祉系。「生活介護」は福祉の目印。</div></div>
+    <div class="q" data-c="i"><div class="qt">② 通所リハビリテーション</div><div class="btns"><button type="button" data-a="f">福祉系</button><button type="button" data-a="i">医療系</button></div><div class="fb">医療系（デイケア）。</div></div>
+    <div class="q" data-c="i"><div class="qt">③ 居宅療養管理指導</div><div class="btns"><button type="button" data-a="f">福祉系</button><button type="button" data-a="i">医療系</button></div><div class="fb">医療系。医師や薬剤師などが家に来て助言する。</div></div>
+    <div class="q" data-c="f"><div class="qt">④ 介護老人福祉施設</div><div class="btns"><button type="button" data-a="f">福祉系</button><button type="button" data-a="i">医療系</button></div><div class="fb">福祉系（特養）。老健（保健施設）とまちがえやすい。</div></div>
+  </div>
+</div>
+
+<!-- ===== パターン4 ===== -->
+<div class="s" id="p4">
+  <h2><span class="pt">パターン4</span>お金のしくみで分ける</h2>
+  <p class="lead">家で使うサービスには、要介護度ごとに「1か月に使える上限」（区分支給限度基準額）があります。その上限の中で組み合わせるものと、上限の外にあるものに分けます。利用者が払うのは、原則1割（所得によって2割・3割）です。</p>
+
+  <div class="money">
+    <div class="wallet">
+      <h3>👛 1か月の上限の中で組み合わせる</h3>
+      <p class="tg">ケアマネジャーが、上限をこえないようにケアプランで組み合わせる。こえた分は全部自分で払う</p>
+      <div class="meter" aria-hidden="true"><span style="width:28%;background:#7f9cf0"></span><span style="width:22%;background:#5fc4a5"></span><span style="width:18%;background:#f0b35b"></span><span style="width:14%;background:#c7a3f0"></span></div>
+      <div class="cols2">
+        <div>
+          <div class="chip"><span class="nm">訪問介護</span></div>
+          <div class="chip"><span class="nm">訪問入浴介護</span></div>
+          <div class="chip"><span class="nm">訪問看護</span></div>
+          <div class="chip"><span class="nm">訪問リハビリテーション</span></div>
+          <div class="chip"><span class="nm">通所介護</span></div>
+          <div class="chip"><span class="nm">通所リハビリテーション</span></div>
+          <div class="chip"><span class="nm">短期入所生活介護</span></div>
+          <div class="chip"><span class="nm">短期入所療養介護</span></div>
+        </div>
+        <div>
+          <div class="chip"><span class="nm">福祉用具貸与</span></div>
+          <div class="chip"><span class="nm">定期巡回・随時対応型訪問介護看護</span></div>
+          <div class="chip"><span class="nm">夜間対応型訪問介護</span></div>
+          <div class="chip"><span class="nm">地域密着型通所介護</span></div>
+          <div class="chip"><span class="nm">認知症対応型通所介護</span></div>
+          <div class="chip"><span class="nm">小規模多機能型居宅介護</span></div>
+          <div class="chip"><span class="nm">看護小規模多機能型居宅介護</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="out a">
+        <h3>🏢 上限の外（住む・入る＋居宅療養管理指導）</h3>
+        <p class="tg">毎月ほぼ決まった額になるので、上限の計算に入れない</p>
+        <div class="chip"><span class="nm">施設サービス 3つ</span><small>特養・老健・介護医療院</small></div>
+        <div class="chip"><span class="nm">特定施設入居者生活介護</span><small>地域密着型も同じ（短期利用を除く）</small></div>
+        <div class="chip"><span class="nm">認知症対応型共同生活介護</span><small>短期利用を除く</small></div>
+        <div class="chip"><span class="nm">地域密着型介護老人福祉施設入所者生活介護</span></div>
+        <div class="chip"><span class="nm">居宅療養管理指導</span><small>家で使うが、上限の外</small></div>
+      </div>
+      <div class="out b">
+        <h3>🧾 別の上限がある（あとで払い戻し）</h3>
+        <p class="tg">いったん全額を払い、あとで保険の分が戻る（償還払い）のが原則</p>
+        <div class="chip"><span class="nm">特定福祉用具販売</span><small>1年間（4月〜翌3月）で10万円まで</small></div>
+        <div class="chip"><span class="nm">住宅改修</span><small>原則1人20万円まで</small></div>
+      </div>
+      <div class="out c">
+        <h3>🆓 利用者の負担なし</h3>
+        <div class="chip"><span class="nm">居宅介護支援</span><small>ケアプランづくりは保険から全額（10割）</small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pay">
+    <div><b>1割</b>　ほとんどの人の利用者負担</div>
+    <div><b>2割・3割</b>　所得が一定以上の人</div>
+    <div><b>食費・居住費</b>　施設やショートステイでは、原則として介護給付とは別に自分で払う</div>
+  </div>
+  <p class="note">上限の金額（要介護度ごとの単位数）は、制度の改定で変わることがあります。国試では「どのサービスが上限の外か」がよく問われます。</p>
+</div>
+
+</div>
+
+<script>
+(function(){
+  var b = document.body;
+  document.getElementById('bHide').addEventListener('click', function(){
+    this.classList.toggle('on', b.classList.toggle('hide'));
+    document.querySelectorAll('.chip.open').forEach(function(c){ c.classList.remove('open'); });
+  });
+  document.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click', function(){ if (b.classList.contains('hide')) c.classList.toggle('open'); });
+  });
+  document.querySelectorAll('.quiz').forEach(function(qz){
+    var qs = qz.querySelectorAll('.q'), sc = document.getElementById(qz.dataset.score);
+    qs.forEach(function(q){
+      q.querySelectorAll('button').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          q.classList.remove('ok', 'ng');
+          q.classList.add(btn.dataset.a === q.dataset.c ? 'ok' : 'ng');
+          var ok = qz.querySelectorAll('.q.ok').length, done = qz.querySelectorAll('.q.ok, .q.ng').length;
+          sc.textContent = done ? '（' + ok + ' / ' + qs.length + '）' : '';
+        });
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
