@@ -248,8 +248,56 @@ body.preparing-print .sheet{zoom:.48}
  });
  observer.observe(document.body,{childList:true,subtree:true,characterData:true});
  // 紙面に必要な高さに合わせる。画面での文字サイズは変更しない。
- function printScale(){sheet.style.setProperty('--furigana-print-scale',Math.min(.53,1055/sheet.offsetHeight).toFixed(5));redrawConnections()}
- window.addEventListener('beforeprint',printScale);
+ // 印刷の縮尺・配置はone-page-printブロックで制御する。
  document.fonts.ready.then(refresh);
 })();
-</script><!-- full-furigana:end --></body></html>
+</script><!-- full-furigana:end --><!-- one-page-print:start --><style>/* A3横・余白7mmの内側に、改ページしない1つの紙面を作る。 */
+body.preparing-print #viewport{
+ width:406mm!important;height:282mm!important;padding:0!important;margin:0 auto!important;
+ overflow:hidden!important;position:relative!important;max-height:none!important;
+ outline:none!important;box-shadow:none!important;border:0!important;
+}
+body.preparing-print #sizer{
+ width:100%!important;height:100%!important;margin:0!important;padding:0!important;
+ position:relative!important;overflow:hidden!important;break-inside:avoid;
+}
+body.preparing-print #sheet{
+ position:absolute!important;left:50%!important;top:50%!important;margin:0!important;
+ width:2700px!important;min-height:0!important;padding:15px 20px!important;
+ transform:translate(-50%,-50%) scale(var(--one-page-print-scale,.35))!important;
+ transform-origin:center center!important;zoom:1!important;box-shadow:none!important;
+}
+@media print{
+ @page{size:A3 landscape;margin:7mm}
+ html,body{margin:0!important;padding:0!important;height:auto!important;overflow:visible!important;background:white!important}
+ body > :not(#viewport){display:none!important}
+ #viewport{
+  width:406mm!important;height:282mm!important;padding:0!important;margin:0 auto!important;
+  overflow:hidden!important;position:relative!important;max-height:none!important;
+  outline:none!important;box-shadow:none!important;border:0!important;
+  break-inside:avoid;break-after:avoid;
+ }
+ #sizer{width:100%!important;height:100%!important;margin:0!important;padding:0!important;position:relative!important;overflow:hidden!important}
+ #sheet{
+  position:absolute!important;left:50%!important;top:50%!important;margin:0!important;
+  width:2700px!important;min-height:0!important;padding:15px 20px!important;
+  transform:translate(-50%,-50%) scale(var(--one-page-print-scale,.35))!important;
+  transform-origin:center center!important;zoom:1!important;box-shadow:none!important;
+ }
+ .more,.minimap,.zoom-dock,.toolbar,dialog{display:none!important}
+ .focused-section{box-shadow:none!important}
+}
+</style><script>(()=>{
+ function prepareOnePagePrint(){
+  document.body.classList.add('preparing-print');
+  // CSS zoomでは文字組みが倍率によって変わるため、等倍で測ってtransformで縮める。
+  const naturalWidth=Math.max(sheet.offsetWidth,sheet.scrollWidth);
+  const naturalHeight=Math.max(sheet.offsetHeight,sheet.scrollHeight);
+  const pageWidth=sizer.clientWidth,pageHeight=sizer.clientHeight;
+  const scale=Math.min(pageWidth/naturalWidth,pageHeight/naturalHeight)*.98;
+  sheet.style.setProperty('--one-page-print-scale',String(scale));
+  redrawConnections();
+ }
+ window.addEventListener('beforeprint',prepareOnePagePrint);
+})();
+</script><!-- one-page-print:end --></body></html>
